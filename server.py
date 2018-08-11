@@ -1,6 +1,7 @@
 import os
 import json
 from tornado import ioloop, web, websocket, concurrent
+from concurrent.futures import ThreadPoolExecutor
 
 
 content = None
@@ -9,7 +10,7 @@ meta_logs_map = {}
 
 class Index(web.RequestHandler):
     def get(self):
-        self.render('dist/index.html')
+        self.render('build/index.html')
 
 
 class SocketManager(object):
@@ -66,7 +67,6 @@ class UploadLog(web.RequestHandler):
 
 
 settings = {
-    'static_path': os.path.join(os.path.dirname(__file__), 'dist'),
     'autoreload': True,
 }
 
@@ -75,6 +75,8 @@ if __name__ == '__main__':
     app = web.Application([
         (r'/', Index),
         (r'/socket', Socket),
+        (r'/build/(.*)', web.StaticFileHandler, {'path': './build'}),
+        (r'/img/(.*)', web.StaticFileHandler, {'path': './assets/img'}),
     ], **settings)
     app.listen(3000)
     ioloop.IOLoop.current().start()
