@@ -4,17 +4,15 @@ import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import webpack from 'webpack';
 
+const spawn = require('child_process').spawn
+
 const plugins = gulpLoadPlugins({
   overridePattern: false,
   pattern: [
     'webpack-stream',
-    'gulp-sass',
-    'gulp-inject'
   ],
   rename: {
     'webpack-stream': 'webpack',
-    'gulp-sass': 'sass',
-    'gulp-inject': 'inject'
   },
 });
 
@@ -53,4 +51,10 @@ gulp.task('html', ['js', 'css'], () => {
     .pipe(plugins.inject(gulp.src('./build/*.js')))
     .pipe(plugins.inject(gulp.src('./build/*.css')))
     .pipe(gulp.dest('./build'));
+});
+
+gulp.task('dev', ['html'], (cb) => {
+  console.info('Starting python');
+  var PIPE = {stdio: 'inherit'};
+  spawn('python', ['server.py'], PIPE).on('close', cb);
 });

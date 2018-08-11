@@ -25,25 +25,17 @@ class SocketManager(object):
         cls.connections.remove(socket)
 
 
-class Socket(websocket.WebSocketHandler):
-    exception_list = ['final_chips', 'self']
-
+class Action(websocket.WebSocketHandler):
     def open(self):
-        print('Open a web socket.')
+        print('Open action socket.')
+        self.write_message({'My': ['JS', 'QH']})
 
     def on_close(self):
-        print('Close a web socket.')
+        print('Close action socket.')
 
     def on_message(self, message):
         print(message)
-        parse_full_json(message)
-        if content:
-            for e in self.exception_list:
-                if e in content:
-                    self.write_message({e: content[e]})
-                    del content[e]
-            for key in content:
-                self.write_message(content.get(key))
+        # self.write_message(content.get(key))
 
 
 class UploadLog(web.RequestHandler):
@@ -74,7 +66,7 @@ settings = {
 if __name__ == '__main__':
     app = web.Application([
         (r'/', Index),
-        (r'/socket', Socket),
+        (r'/action', Action),
         (r'/build/(.*)', web.StaticFileHandler, {'path': './build'}),
         (r'/img/(.*)', web.StaticFileHandler, {'path': './assets/img'}),
     ], **settings)

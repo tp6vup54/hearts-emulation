@@ -4,6 +4,7 @@
   "scripts": {
     "build": "gulp",
     "clean": "gulp clean",
+    "dev": "gulp dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
