@@ -11,8 +11,6 @@
     "babel-eslint": "",
     "babel-loader": "",
     "babel-plugin-transform-es2015-modules-commonjs": "",
-    "babel-preset-es2015": "",
-    "babel-preset-react": "",
     "gulp": "",
     "gulp-clean": "",
     "gulp-cli": "",
@@ -23,11 +21,7 @@
     "gulp-rename": "",
     "gulp-replace": "",
     "gulp-sass": "",
-    "html-webpack-plugin": "",
-    "react": "",
-    "react-dom": "",
     "webpack": "",
-    "webpack-dev-server": "",
     "webpack-stream": ""
   }
 }

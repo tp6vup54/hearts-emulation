@@ -28,15 +28,15 @@ gulp.task('clean', () => {
 
 gulp.task('js', () => {
   return gulp.src(`./src/js/index.js`)
-    .pipe(plugins.webpack(require('./webpack.config.js'), webpack))
-    // .pipe(plugins.webpack({
-    //   resolve: {
-    //     modules: [
-    //       path.resolve(__dirname, '.'),
-    //       'node_modules',
-    //     ],
-    //   },
-    // }, webpack))
+    .pipe(plugins.webpack(require('./webpack.config.js')))
+    .pipe(plugins.webpack({
+      resolve: {
+        modules: [
+          path.resolve(__dirname, '.'),
+          'node_modules',
+        ],
+      },
+    }, webpack))
     .pipe(plugins.rename(`bundle.js`))
     .pipe(gulp.dest('./build'));
 });
