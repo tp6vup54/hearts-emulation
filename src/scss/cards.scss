@@ -1,9 +1,25 @@
 img {
-    width: 60px;
+    width: 100px;
     border: 1px solid gray;
     border-radius: 5px;
 }
 
 .card {
     background-color: white;
+    position: absolute;
+}
+
+.first {
+}
+
+.second {
+    transform: rotate(90deg);
+}
+
+.third {
+    transform: rotate(180deg);
+}
+
+.forth {
+    transform: rotate(270deg);
 }

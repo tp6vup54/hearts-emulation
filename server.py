@@ -28,7 +28,7 @@ class SocketManager(object):
 class Action(websocket.WebSocketHandler):
     def open(self):
         print('Open action socket.')
-        self.write_message({'My': ['JS', 'QH']})
+        self.write_message({'first': ['JS', 'QH'], 'second': ['AC', 'KS'], 'third': ['5H', '6S'], 'forth': ['JC', 'JD']})
 
     def on_close(self):
         print('Close action socket.')
