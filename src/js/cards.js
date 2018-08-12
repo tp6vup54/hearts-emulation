@@ -87,13 +87,17 @@ class Card {
 
     getCardImgName () {
         var name = '/img/';
-        if (this.cardName[0] in chars) {
-            name += chars[this.cardName[0]];
+        if (this.playerId == 0) {
+            if (this.cardName[0] in chars) {
+                name += chars[this.cardName[0]];
+            } else {
+                name += this.cardName[0];
+            }
+            name += '_of_' + suits[this.cardName[1]] + '.png';
+            return name
         } else {
-            name += this.cardName[0];
+            return name + 'back.png'
         }
-        name += '_of_' + suits[this.cardName[1]] + '.png';
-        return name
     }
 
     getRenderedElement () {
