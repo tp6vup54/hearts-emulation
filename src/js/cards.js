@@ -6,6 +6,9 @@ import {
     currentState,
     sets,
 } from './machine';
+import {
+    passingBtnWrapper,
+} from './passing';
 
 
 const chars = {
@@ -172,8 +175,11 @@ function selectCard (e) {
     } else {
         const upper = selectedUpperBound[currentState];
         if (sets.first.getSelectedCount() < upper) {
+            // passingBtnWrapper.enableDisplay(false);
             e.currentTarget.classList.add('selected');
             e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) - cardPostitionSetting.cardSelected + 'px';
+        } else {
+            passingBtnWrapper.enableDisplay(true);
         }
     }
 }

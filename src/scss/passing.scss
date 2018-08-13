@@ -1,0 +1,19 @@
+.passing {
+    $side: 112px;
+    -webkit-animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    -ms-transition-animation-duration: 2s;
+    -webkit-transition-duration: 0.4s;
+    -moz-transition-duration: 0.4s;
+    -ms-transition-animation-duration: 0.4s;
+    transition-duration: 0.4s;
+    position: absolute;
+    width: $side;
+    left: calc(50%);
+    top: calc(50% - 112px / 2);
+    color: gray ;
+
+    &:hover {
+        color: skyblue ;
+    }
+}
