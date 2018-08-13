@@ -2,6 +2,10 @@ export {
     Card,
     CardSet,
 };
+import {
+    currentState,
+    sets,
+} from './machine';
 
 
 const chars = {
@@ -24,6 +28,11 @@ const cardPostitionSetting = {
     edgeSpacing: 20,
     cardRatio: 1.455,
     cardSelected: 30,
+};
+
+const selectedUpperBound = {
+    passing: 3,
+    playing: 1,
 };
 
 const PositionSetter = {
@@ -107,19 +116,7 @@ class Card {
         img.setAttribute('src', this.getCardImgName());
         div.appendChild(img);
         div.setAttribute('playerId', this.playerId);
-        div.addEventListener('click', (e) => {
-            if (e.currentTarget.getAttribute('playerId') != 0) {
-                return;
-            }
-            if (e.currentTarget.classList.contains('selected')) {
-                e.currentTarget.classList.remove('selected');
-                parseInt(e.currentTarget.style.top, 10)
-                e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) + cardPostitionSetting.cardSelected + 'px';
-            } else {
-                e.currentTarget.classList.add('selected');
-                e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) - cardPostitionSetting.cardSelected + 'px';
-            }
-        });
+        div.addEventListener('click', selectCard);
         return div;
     }
 }
@@ -128,8 +125,14 @@ class Card {
 class CardSet {
     constructor (playerId, cards) {
         this.cards = [];
-        for (let i = 0; i < cards.length; i++) {
-            this.cards.push(new Card(cards[i], playerId));
+        if (cards) {
+            for (let i = 0; i < cards.length; i++) {
+                this.cards.push(new Card(cards[i], playerId));
+            }
+        } else {
+            for (let i = 0; i < 13; i++) {
+                this.cards.push(new Card(null, playerId));
+            }
         }
         posSetter[playerId](this.cards);
         this.playerId = playerId;
@@ -145,5 +148,32 @@ class CardSet {
 
     resetPos () {
         posSetter[this.playerId](this.cards);
+    }
+
+    getSelectedCount () {
+        var count = 0;
+        for (let i = 0; i < this.cards.length; i++) {
+            if (this.cards[i].element.classList.contains('selected')) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+function selectCard (e) {
+    if (e.currentTarget.getAttribute('playerId') != 0) {
+        return;
+    }
+    if (e.currentTarget.classList.contains('selected')) {
+        e.currentTarget.classList.remove('selected');
+        parseInt(e.currentTarget.style.top, 10)
+        e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) + cardPostitionSetting.cardSelected + 'px';
+    } else {
+        const upper = selectedUpperBound[currentState];
+        if (sets.first.getSelectedCount() < upper) {
+            e.currentTarget.classList.add('selected');
+            e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) - cardPostitionSetting.cardSelected + 'px';
+        }
     }
 }

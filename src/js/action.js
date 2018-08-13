@@ -3,30 +3,25 @@ export {
     onWindowResize,
 };
 import {
-    CardSet,
-} from './cards';
+    getAction,
+    sets,
+} from './machine';
 
 
-const setName = ['first', 'second', 'third', 'forth'];
-const sets = [];
-
-function onActionMessage(e) {
+function onActionMessage (e) {
     const msg = JSON.parse(e.data);
     console.log(msg);
-    const app = document.querySelector('#app');
-    for (let i = 0; i < setName.length; i++) {
-        sets.push(new CardSet(i, msg.cards[setName[i]]));
-    }
-    for (let i = 0; i < sets.length; i++) {
-        const elements = sets[i].getRenderedElement();
-        for (let j = 0; j < elements.length; j++) {
-            app.appendChild(elements[j]);
-        }
-    }
+    const action = getAction(msg.state);
+    action(msg);
 }
 
-function onWindowResize() {
-    for (let i = 0; i < sets.length; i++) {
-        sets[i].resetPos();
+function onActionResponse () {
+    
+}
+
+function onWindowResize () {
+    const s = Object.values(sets);
+    for (let i = 0; i < s.length; i++) {
+        s[i].resetPos();
     }
 }

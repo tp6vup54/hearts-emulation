@@ -70,7 +70,7 @@ class OutputParser(Parser):
 
     def parse_passing(self, command):
         ret = {
-            'stage': 'passing',
+            'state': 'passing',
             'cards': {},
         }
         start = command[0].find('[')
