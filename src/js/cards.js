@@ -13,14 +13,14 @@ const chars = {
 };
 
 const suits = {
-    'S': 'spades',
-    'H': 'hearts',
-    'D': 'diamonds',
-    'C': 'clubs',
+    's': 'spades',
+    'h': 'hearts',
+    'd': 'diamonds',
+    'c': 'clubs',
 };
 
 const cardPostitionSetting = {
-    cardSpacing: 20,
+    cardSpacing: 25,
     edgeSpacing: 20,
     cardRatio: 1.455,
     cardSelected: 30,

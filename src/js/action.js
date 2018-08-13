@@ -15,7 +15,7 @@ function onActionMessage(e) {
     console.log(msg);
     const app = document.querySelector('#app');
     for (let i = 0; i < setName.length; i++) {
-        sets.push(new CardSet(i, msg[setName[i]]));
+        sets.push(new CardSet(i, msg.cards[setName[i]]));
     }
     for (let i = 0; i < sets.length; i++) {
         const elements = sets[i].getRenderedElement();

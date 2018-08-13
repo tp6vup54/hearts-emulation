@@ -3,6 +3,7 @@ import json
 from tornado import ioloop, web, websocket, concurrent
 from concurrent.futures import ThreadPoolExecutor
 
+from hearts.adapter import HeartAdapter
 
 content = None
 meta_logs_map = {}
@@ -28,10 +29,15 @@ class SocketManager(object):
 class Action(websocket.WebSocketHandler):
     def open(self):
         print('Open action socket.')
-        self.write_message({'first': ['JS', 'QH'], 'second': ['AC', 'KS'], 'third': ['5H', '6S'], 'forth': ['JC', 'JD']})
+        self.adapter = HeartAdapter()
+        msg = self.adapter.communicate()
+        print(msg)
+        self.write_message(msg)
 
     def on_close(self):
         print('Close action socket.')
+        if self.adapter:
+            del self.adapter
 
     def on_message(self, message):
         print(message)
