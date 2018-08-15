@@ -1,6 +1,12 @@
 export {
     passingBtnWrapper,
-}
+};
+import {
+    getResponse,
+} from './machine';
+import {
+    refreshAfterPassing,
+} from './invalidate';
 
 const arrowClass = {
     1: 'fas fa-long-arrow-alt-right fa-7x',
@@ -13,7 +19,8 @@ class PassingButtonWrapper {
     constructor () {
         this.element = document.createElement('i');
         this.setArrowClass();
-        this.element.style.display = 'block';
+        this.element.style.display = 'none';
+        this.element.addEventListener('click', this.onClick);
         const app = document.querySelector('#app');
         app.appendChild(this.element);
     }
@@ -24,12 +31,18 @@ class PassingButtonWrapper {
         this.element.classList.add('fadeInLeft');
     }
 
-    enableDisplay (enable) {
+    async enableDisplay (enable) {
         if (enable) {
             this.element.style.display = 'block';
         } else {
             this.element.style.display = 'none';
         }
+    }
+
+    async onClick () {
+        const func = await getResponse()
+        await func();
+        await refreshAfterPassing();
     }
 }
 

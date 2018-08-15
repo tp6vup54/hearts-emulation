@@ -5,4 +5,8 @@ import {
     onWindowResize,
 } from './action';
 
-window.addEventListener('resize', onWindowResize);
+async function main () {
+    window.addEventListener('resize', onWindowResize);
+}
+
+main()

@@ -8,10 +8,10 @@ import {
 } from './machine';
 
 
-function onActionMessage (e) {
+async function onActionMessage (e) {
     const msg = JSON.parse(e.data);
     console.log(msg);
-    const action = getAction(msg.state);
+    const action = await getAction(msg.state);
     action(msg);
 }
 
@@ -19,7 +19,7 @@ function onActionResponse () {
     
 }
 
-function onWindowResize () {
+async function onWindowResize () {
     const s = Object.values(sets);
     for (let i = 0; i < s.length; i++) {
         s[i].resetPos();

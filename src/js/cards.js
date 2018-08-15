@@ -7,6 +7,10 @@ import {
     sets,
 } from './machine';
 import {
+    animationEnd,
+    animationCount,
+} from './invalidate';
+import {
     passingBtnWrapper,
 } from './passing';
 
@@ -162,9 +166,39 @@ class CardSet {
         }
         return count;
     }
+
+    getSelectedCards () {
+        const ret = [];
+        for (let i = 0; i < this.cards.length; i++) {
+            if (this.cards[i].element.classList.contains('selected')) {
+                ret.push(this.cards[i].cardName);
+            }
+        }
+        return ret;
+    }
+
+    async removeSelectedCards () {
+        const removeElement = [];
+        for (let i = 0; i < this.cards.length; i++) {
+            if (this.cards[i].element.classList.contains('selected')) {
+                removeElement.push(this.cards[i]);
+            }
+        }
+        for (let i = 0; i < removeElement.length; i++) {
+            this.cards.splice(this.cards.indexOf(removeElement[i]), 1);
+            animationCount.increment();
+            removeElement[i].element.classList.add('animated');
+            removeElement[i].element.classList.add('fadeOutUp');
+            removeElement[i].element.classList.add('removed');
+            removeElement[i].element.addEventListener(animationEnd, (e) => {
+                animationCount.decrement();
+                e.currentTarget.parentNode.removeChild(e.currentTarget);
+            });
+        }
+    }
 }
 
-function selectCard (e) {
+async function selectCard (e) {
     if (e.currentTarget.getAttribute('playerId') != 0) {
         return;
     }
@@ -175,11 +209,13 @@ function selectCard (e) {
     } else {
         const upper = selectedUpperBound[currentState];
         if (sets.first.getSelectedCount() < upper) {
-            // passingBtnWrapper.enableDisplay(false);
             e.currentTarget.classList.add('selected');
             e.currentTarget.style.top = parseInt(e.currentTarget.style.top, 10) - cardPostitionSetting.cardSelected + 'px';
-        } else {
-            passingBtnWrapper.enableDisplay(true);
         }
+    }
+    if (sets.first.getSelectedCount() == 3) {
+        await passingBtnWrapper.enableDisplay(true);
+    } else {
+        await passingBtnWrapper.enableDisplay(false);
     }
 }

@@ -7,6 +7,16 @@ img {
 .card {
     background-color: white;
     position: absolute;
+    -webkit-transition-duration: 0.1s;
+    -moz-transition-duration: 0.1s;
+    -ms-transition-animation-duration: 0.1s;
+    transition-duration: 0.1s;
+    &.removed {
+        -webkit-transition-duration: 0.5s;
+        -moz-transition-duration: 0.5s;
+        -ms-transition-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+    }
 }
 
 .first {
