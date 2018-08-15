@@ -20,12 +20,9 @@ class HeartAdapter(object):
         if not self.process:
             self.process = subprocess.Popen(
                 self.cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
-            flags = fcntl.fcntl(self.process.stdout, fcntl.F_GETFL)
-            fcntl.fcntl(self.process.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
         real_command = self.parsers['input'].parse(command)
         if real_command:
             self.process.stdin.writelines(real_command)
-        time.sleep(0.6)
         content = self.process.stdout.readlines()
         feedback_command = self.parsers['output'].parse(content)
         return feedback_command
