@@ -30,7 +30,7 @@ class Action(websocket.WebSocketHandler):
     def open(self):
         print('Open action socket.')
         self.adapter = HeartAdapter()
-        msg = self.adapter.communicate()
+        msg = self.adapter.output()
         print(msg)
         self.write_message(msg)
 
