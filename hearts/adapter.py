@@ -14,9 +14,10 @@ class HeartAdapter(object):
         self.machine = StateMachine()
 
     def input(self, msg):
-        content = self.process.stdout.readlines()
-        feedback_command = self.parsers['output'].parse(content)
-        return feedback_command
+        parsed_msg = self.machine.current_state.parse_input(msg)
+        self.process.stdin.write(parsed_msg + '\n')
+        self.machine.current_state.change(self.machine)
+        return parsed_msg
 
     def output(self):
         return self.machine.current_state.parse_output(self.process.stdout)

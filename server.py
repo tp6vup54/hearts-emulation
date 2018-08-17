@@ -41,7 +41,10 @@ class Action(websocket.WebSocketHandler):
 
     def on_message(self, message):
         print(message)
-        # self.write_message(content.get(key))
+        message = json.loads(message)
+        self.adapter.input(message)
+        msg = self.adapter.output()
+        self.write_message(msg)
 
 
 class UploadLog(web.RequestHandler):
