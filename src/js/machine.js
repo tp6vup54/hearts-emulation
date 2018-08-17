@@ -15,17 +15,8 @@ var currentState = '';
 const setName = ['first', 'second', 'third', 'forth'];
 const sets = {};
 
-const suitDirection = ['s', 'c', 'd', 'h'];
-const numDirection = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
-
 const Action = {
     passing (msg) {
-        msg.cards.first.sort( (a, b) => {
-            if (suitDirection.indexOf(a[1]) == suitDirection.indexOf(b[1])) {
-                return numDirection.indexOf(a[0]) - numDirection.indexOf(b[0]);
-            }
-            return suitDirection.indexOf(a[1]) - suitDirection.indexOf(b[1]);
-        });
         const app = document.querySelector('#app');
         for (let i = 0; i < setName.length; i++) {
             sets[setName[i]] = new CardSet(i, msg.cards[setName[i]]);
