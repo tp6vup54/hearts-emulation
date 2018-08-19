@@ -1,79 +1,92 @@
+import hearts.parser as parser
+
+
 class StateMachine(object):
     def __init__(self):
         self.current_state = PassingState()
 
-    def set_state(self):
+    def change(self):
         self.current_state.change(self)
+
+    def set_state(self, state):
+        self.current_state = state
 
 
 class State(object):
-    def change(self, machine):
-        pass
-
-    def parse_input(self, msg):
-        pass
-
-    def parse_output(self, stream):
-        pass
-
-
-class PassingState(State):
     def __init__(self):
-        self.return_template = {
-            'state': 'passing',
-            'cards': {},
-        }
+        self.stop_word = ''
+        self.parser = None
+        self.queued_msg = None
 
     def change(self, machine):
-        machine.set_state(TransferState())
+        pass
 
     def parse_input(self, msg):
-        return ' '.join(msg['transfer'])
+        pass
 
     def parse_output(self, stream):
+        msg = self._fetch_message(stream)
+        self.parser.queued_msg = self.queued_msg
+        ret = self.parser.parse(msg)
+        self.queued_msg = self.parser.queued_msg
+        return ret
+
+    def _fetch_message(self, stream):
         msg = []
         while True:
             s = stream.readline()
             msg.append(s)
-            if 'Transfer cards:' in s:
+            if self.stop_word in s:
                 break
-        start = msg[-2].find('[')
-        end = msg[-2].find(']')
-        l = eval(msg[-2][start:end + 1])
-        t = self.return_template
-        t['cards']['first'] = l
-        return t
+        return msg
+
+
+class PassingState(State):
+    def __init__(self):
+        super(PassingState, self).__init__()
+        self.parser = parser.PassingParser()
+        self.stop_word = 'Transfer cards:'
+
+    def change(self, machine):
+        s = TransferState()
+        s.queued_msg = self.queued_msg
+        machine.set_state(s)
+
+    def parse_input(self, msg):
+        return ' '.join(msg['transfer'])
 
 
 class TransferState(State):
     def __init__(self):
-        self.return_template = {
-            'received': [],
-            'cards': [],
-        }
+        super(TransferState, self).__init__()
+        self.parser = parser.TransferParser()
+        self.stop_word = 'Play cards:'
 
     def change(self, machine):
-        machine.set_state(PlayingState())
+        s = PlayingState()
+        s.queued_msg = self.queued_msg
+        machine.set_state(s)
 
     def parse_input(self, msg):
-        pass
-
-    def parse_output(self, stream):
-        pass
+        return None
 
 
 class PlayingState(State):
     def __init__(self):
-        self.return_template = {
-            'state': 'playing',
-            'actions': [],
-        }
+        super(PlayingState, self).__init__()
+        self.parser = parser.PlayingParser()
+        self.stop_work = 'Play cards:'
 
     def change(self, machine):
-        machine.set_state()
+        machine.set_state(self)
 
     def parse_input(self, msg):
-        pass
+        return msg['card']
 
     def parse_output(self, stream):
-        pass
+        if not self.queued_msg:
+            return super(PlayingState, self).parse_output(stream)
+        else:
+            ret = self.queued_msg
+            self.queued_msg = None
+            return ret

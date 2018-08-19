@@ -40,10 +40,11 @@ class Action(websocket.WebSocketHandler):
             del self.adapter
 
     def on_message(self, message):
-        print(message)
+        print('Received: ' + message)
         message = json.loads(message)
         self.adapter.input(message)
         msg = self.adapter.output()
+        print('Going to write: ' + str(msg))
         self.write_message(msg)
 
 

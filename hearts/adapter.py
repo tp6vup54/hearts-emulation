@@ -15,8 +15,10 @@ class HeartAdapter(object):
 
     def input(self, msg):
         parsed_msg = self.machine.current_state.parse_input(msg)
-        self.process.stdin.write(parsed_msg + '\n')
-        self.machine.current_state.change(self.machine)
+        if parsed_msg:
+            self.process.stdin.write(parsed_msg + '\n')
+        self.process.stdin.flush()
+        self.machine.change()
         return parsed_msg
 
     def output(self):

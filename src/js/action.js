@@ -3,7 +3,7 @@ export {
     onWindowResize,
 };
 import {
-    getAction,
+    getState,
     sets,
 } from './machine';
 
@@ -11,8 +11,8 @@ import {
 async function onActionMessage (e) {
     const msg = JSON.parse(e.data);
     console.log(msg);
-    const action = await getAction(msg.state);
-    action(msg);
+    const state = await getState(msg.state);
+    await state.action(msg);
 }
 
 function onActionResponse () {

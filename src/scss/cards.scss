@@ -17,6 +17,9 @@ img {
         -ms-transition-animation-duration: 0.5s;
         animation-duration: 0.5s;
     }
+    &.movable {
+        box-shadow: 0 0 25px lightblue;
+    }
 }
 
 .first {

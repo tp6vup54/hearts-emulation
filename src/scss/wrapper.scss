@@ -17,3 +17,25 @@
         color: skyblue ;
     }
 }
+
+.button-ok {
+    text-align: center;
+    font-size: 36px;
+    vertical-align: middle;
+    padding: 17px 46px;
+    border: 1px solid #bdbdbd;
+    border-radius: 18px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #6eaf88;
+    font: normal normal bold 36px verdana;
+    color: #ffffff;
+    &:hover {
+        background: #4bd68e;
+        color: #ffffff;
+    }
+    &:active {
+        background: #01ae3f;
+    }
+}
